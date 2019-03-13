@@ -1,0 +1,529 @@
+package com.company;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Double[][] matrix = {
+                {0.0 ,10.0,9.0 ,6.0 ,7.0 ,12.0,9.0 ,9.0 ,10.0,9.0 ,10.0,14.0,10.0,9.0 ,9.0 ,11.0,11.0,9.0 ,10.0,10.0,9.0 ,8.0 ,12.0,10.0,10.0},
+                {10.0,0.0 ,13.0,11.0,11.0,4.0 ,3.0 ,5.0 ,8.0 ,13.0,8.0 ,8.0 ,13.0,5.0 ,8.0 ,7.0 ,14.0,11.0,14.0,11.0,6.0 ,13.0,14.0,6.0 ,8.0 },
+                {9.0 ,13.0,0.0 ,5.0 ,3.0 ,13.0,11.0,10.0,11.0,4.0 ,11.0,15.0,4.0 ,9.0 ,8.0 ,13.0,8.0 ,8.0 ,5.0 ,9.0 ,8.0 ,3.0 ,8.0 ,9.0 ,11.0},
+                {6.0 ,11.0,5.0 ,0.0 ,2.0 ,12.0,9.0 ,9.0 ,11.0,5.0 ,11.0,14.0,5.0 ,9.0 ,9.0 ,12.0,8.0 ,8.0 ,6.0 ,10.0,9.0 ,4.0 ,9.0 ,9.0 ,11.0},
+                {7.0 ,11.0,3.0 ,2.0 ,0.0 ,13.0,10.0,10.0,11.0,4.0 ,11.0,15.0,4.0 ,9.0 ,8.0 ,13.0,7.0 ,7.0 ,5.0 ,9.0 ,8.0 ,3.0 ,8.0 ,9.0 ,10.0},
+                {12.0,4.0 ,13.0,12.0,13.0,0.0 ,4.0 ,6.0 ,7.0 ,14.0,7.0 ,6.0 ,15.0,6.0 ,8.0 ,8.0 ,13.0,11.0,15.0,11.0,7.0 ,14.0,15.0,7.0 ,7.0 },
+                {9.0 ,3.0 ,11.0,9.0 ,10.0,4.0 ,0.0 ,3.0 ,5.0 ,11.0,6.0 ,8.0 ,12.0,3.0 ,6.0 ,7.0 ,12.0,9.0 ,11.0,9.0 ,4.0 ,11.0,12.0,4.0 ,6.0 },
+                {9.0 ,5.0 ,10.0,9.0 ,10.0,6.0 ,3.0 ,0.0 ,7.0 ,11.0,7.0 ,10.0,12.0,2.0 ,5.0 ,10.0,13.0,9.0 ,12.0,9.0 ,3.0 ,11.0,13.0,5.0 ,7.0 },
+                {10.0,8.0 ,11.0,11.0,11.0,7.0 ,5.0 ,7.0 ,0.0 ,11.0,1.0 ,13.0,11.0,6.0 ,8.0 ,11.0,7.0 ,7.0 ,12.0,6.0 ,6.0 ,12.0,14.0,7.0 ,1.0 },
+                {9.0 ,13.0,4.0 ,5.0 ,4.0 ,14.0,11.0,11.0,11.0,0.0 ,12.0,16.0,3.0 ,10.0,9.0 ,14.0,9.0 ,9.0 ,4.0 ,11.0,9.0 ,4.0 ,9.0 ,10.0,12.0},
+                {10.0,8.0 ,11.0,11.0,11.0,7.0 ,6.0 ,7.0 ,1.0 ,12.0,0.0 ,13.0,12.0,6.0 ,8.0 ,11.0,7.0 ,7.0 ,13.0,6.0 ,7.0 ,13.0,14.0,8.0 ,2.0 },
+                {14.0,8.0 ,15.0,14.0,15.0,6.0 ,8.0 ,10.0,13.0,16.0,13.0,0.0 ,18.0,9.0 ,12.0,5.0 ,18.0,16.0,18.0,15.0,10.0,17.0,19.0,11.0,12.0},
+                {10.0,13.0,4.0 ,5.0 ,4.0 ,15.0,12.0,12.0,11.0,3.0 ,12.0,18.0,0.0 ,11.0,10.0,15.0,9.0 ,9.0 ,4.0 ,11.0,10.0,4.0 ,7.0 ,10.0,12.0},
+                {9.0 ,5.0 ,9.0 ,9.0 ,9.0 ,6.0 ,3.0 ,2.0 ,6.0 ,10.0,6.0 ,9.0 ,11.0,0.0 ,5.0 ,8.0 ,12.0,8.0 ,11.0,8.0 ,2.0 ,10.0,12.0,3.0 ,6.0 },
+                {9.0 ,8.0 ,8.0 ,9.0 ,8.0 ,8.0 ,6.0 ,5.0 ,8.0 ,9.0 ,8.0 ,12.0,10.0,5.0 ,0.0 ,9.0 ,11.0,7.0 ,10.0,8.0 ,3.0 ,10.0,13.0,4.0 ,7.0 },
+                {11.0,7.0 ,13.0,12.0,13.0,8.0 ,7.0 ,10.0,11.0,14.0,11.0,5.0 ,15.0,8.0 ,9.0 ,0.0 ,14.0,11.0,14.0,12.0,7.0 ,13.0,14.0,8.0 ,9.0 },
+                {11.0,14.0,8.0 ,8.0 ,7.0 ,13.0,12.0,13.0,7.0 ,9.0 ,7.0 ,18.0,9.0 ,12.0,11.0,14.0,0.0 ,10.0,9.0 ,9.0 ,12.0,10.0,10.0,13.0,8.0 },
+                {9.0 ,11.0,8.0 ,8.0 ,7.0 ,11.0,9.0 ,9.0 ,7.0 ,9.0 ,7.0 ,16.0,9.0 ,8.0 ,7.0 ,11.0,10.0,0.0 ,10.0,4.0 ,7.0 ,9.0 ,13.0,8.0 ,7.0 },
+                {10.0,14.0,5.0 ,6.0 ,5.0 ,15.0,11.0,12.0,12.0,4.0 ,13.0,18.0,4.0 ,11.0,10.0,14.0,9.0 ,10.0,0.0 ,11.0,10.0,5.0 ,5.0 ,11.0,12.0},
+                {10.0,11.0,9.0 ,10.0,9.0 ,11.0,9.0 ,9.0 ,6.0 ,11.0,6.0 ,15.0,11.0,8.0 ,8.0 ,12.0,9.0 ,4.0 ,11.0,0.0 ,8.0 ,10.0,14.0,9.0 ,6.0 },
+                {9.0 ,6.0 ,8.0 ,9.0 ,8.0 ,7.0 ,4.0 ,3.0 ,6.0 ,9.0 ,7.0 ,10.0,10.0,2.0 ,3.0 ,7.0 ,12.0,7.0 ,10.0,8.0 ,0.0 ,10.0,13.0,2.0 ,7.0 },
+                {8.0 ,13.0,3.0 ,4.0 ,3.0 ,14.0,11.0,11.0,12.0,4.0 ,13.0,17.0,4.0 ,10.0,10.0,13.0,10.0,9.0 ,5.0 ,10.0,10.0,0.0 ,8.0 ,10.0,12.0},
+                {12.0,14.0,8.0 ,9.0 ,8.0 ,15.0,12.0,13.0,14.0,9.0 ,14.0,19.0,7.0 ,12.0,13.0,14.0,10.0,13.0,5.0 ,14.0,13.0,8.0 ,0.0 ,14.0,13.0},
+                {10.0,6.0 ,9.0 ,9.0 ,9.0 ,7.0 ,4.0 ,5.0 ,7.0 ,10.0,8.0 ,11.0,10.0,3.0 ,4.0 ,8.0 ,13.0,8.0 ,11.0,9.0 ,2.0 ,10.0,14.0,0.0 ,7.0 },
+                {10.0,8.0 ,11.0,11.0,10.0,7.0 ,6.0 ,7.0 ,1.0 ,12.0,2.0 ,12.0,12.0,6.0 ,7.0 ,9.0 ,8.0 ,7.0 ,12.0,6.0 ,7.0 ,12.0,13.0,7.0 ,0.0 }};
+
+        int size = matrix.length;
+        System.out.print(size);
+        halveMatrix(matrix,size);
+        printMatrix(matrix,size);
+
+        /**perform kruskals algorithm to matrix, which makes MSTMatrix*/
+        Double[][] MSTMatrix = new Double[size][size]; //initiere matrixen, altså lave en tom matrix
+        initiateMatrix(MSTMatrix,size);
+        int addedEs = 0; //initiere antal tilføjede kanter til kruskals træ
+        while (addedEs < size-1) { debug("addedEs: "+addedEs); //træet har |V|-1 kanter, så mens alle kanter ikke er tilføjede, køres nedenstående loop:
+            double smallest = 0;
+            Edgie edgie = new Edgie(0,0,0);
+
+            for (int x = 0; x < size; x++) {//vi går hen ad matrixens "x"-akse.
+                for (int y = 0; y < size; y++) {//går hen ad matrixens "y"-akse.
+                    if (matrix[x][y] != 0 && MSTMatrix[x][y] == 0) {//hvis matrixens vægt IKKE er lig 0  OG  MSTMatrixens vægt er lig 0 så...
+                        if (matrix[x][y] < smallest || smallest == 0) {//hvis matrixens vægt er mindre end den hidtil fundne mindste vægt  ELLER den mindste vægt er lig 0, så..
+                            Double[][] tempMatrix = new Double[size][size];
+                            copyMatrix(MSTMatrix,tempMatrix,size);//kopier ufærdig matrix til en midlertidig matrix.
+                            tempMatrix[x][y]++; //vi vil nu se hvad der sker, hvis kanten tilføjes til  kruskaltræet..
+                            tempMatrix[y][x]++;
+                            if (!kruskal_findLoopX(tempMatrix,size,x,y)){debug("found tree");//hvis vi ikke finder et loop, så...
+                                edgie.beginV = x;//så sættes den fundne kants incindente punkter og vægt nu som dem, som nu skal tilføjes.
+                                edgie.endV = y;
+                                smallest = matrix[x][y];
+                            }
+                        }
+                    }
+                }
+            }
+            MSTMatrix[edgie.beginV][edgie.endV]++;//efter vi er gået igennem alle kanter, tilføjes kanten med mindste vægt til kruskal matrixen.
+            debug("entered: "+MSTMatrix[edgie.beginV][edgie.endV]);
+            MSTMatrix[edgie.endV][edgie.beginV]++;
+            addedEs++;//sjovt nok er den nu en extra kant
+        }
+        debug("binary Kruskal matrix");
+        printMatrix(MSTMatrix, size);
+
+
+        /**Make subgraph only with vertices with odd degree in MSTMatrix*/
+        Double[][] OMatrix = new Double[size][size];
+        initiateMatrix(OMatrix,size);                                               //Tag MSTMatrix(kruskalmatrix) og lav en matrix, hvor kun kanterne med ulige grad beholdes.
+        for (int x = 0; x < size; x++) {                                    //gå hen ad y aksen
+            int degV = 0;                                                   //initiere graden af kanten.
+            for (int y = 0; y < size; y++) {                                //gå ad x aksen
+                if (MSTMatrix[y][x] == 1) {                                 //hvis der er en kant, så...
+                    degV++;                                                     // læg 1 til graden af kanten.
+                }
+            }
+
+            if ( degV % 2 != 0 ) { debug("degree of this node "+x+" is odd.");  // hvis graden er lige, så tilføj kanten til matricen
+
+                OMatrix[x][x] = 1d;
+
+            }
+        }
+        debug("subgraph with odd degs");
+        printMatrix(OMatrix,size);
+
+        /**Form subgraph with OMatrix's nodes...*/
+        Double[][] subGraph = new Double[size][size];           //OMatricen består kun af 1 og 0. Her erstattes 1 med matricens oprindelige vægte.
+        copyMatrix(matrix,subGraph,size);
+        int subGraphSize = 0;                                   //angiv variabel for hvor mange punkter er tilbage i grafen
+        for (int x = 0; x < size; x++){
+            if (OMatrix[x][x] == 0){
+                for (int y = 0; y < size; y++){
+                    subGraph[x][y] = 0d;
+                    subGraph[y][x] = 0d;
+                }
+            }else subGraphSize++;
+        }
+        debug("printing subgraph...");
+        printMatrix(subGraph,size);
+
+        debug("returning symmery: ");
+        returnSymmetry(subGraph,size);                                      //gør matricen symmetrisk
+        printMatrix(subGraph,size);
+        /**Make minimum weight, perfect matching graph using brute force.*/
+        double[] minGraphWeight = {99999d};                                     // angiv variabel til mindste vægt af den perfekt parrede træ.
+        ArrayList<Integer> freeNodes = initiateFreeNodes(OMatrix, size);    //lav en liste af alle punkterne fra ulige-grads-matricen.
+        Stack<Integer> spentNodes = new Stack<>();                          //initiere en liste til brugte punkter
+        Stack<Integer> foundList = new Stack<>();                           //initiere en liste, som skal holde på parringen med hidtil mindst vægt.
+
+        debug("freeNode's size: "+freeNodes.size());
+        for (int i = 0; i < freeNodes.size(); i++) {debug("vStart: " + freeNodes.get(i));   //vi starter med at tage det første frie ppunkt..
+            Integer vStart= freeNodes.get(i);                                                                              //tag punktet fra listen af de frie punkter, og sæt det som vStart
+            freeNodes.remove(vStart);                                                                                      //fjerner punktet fra listen af frie punkter
+            spentNodes.add(vStart);                                                                                        // tilføj punktet til listen af brugte punkter
+
+            for (int j = i; j < freeNodes.size(); j++) {debug("j: "+j+". FreeNode: " + freeNodes.get(j));   //tilføjer det næste punkt..
+                int departNode  = spentNodes.peek();
+                int arrivalNode = freeNodes.get(j);
+                if (MSTMatrix[departNode][arrivalNode] == 0) {
+
+                    Integer freeNode = freeNodes.get(j);
+                    freeNodes.remove(freeNode);
+                    spentNodes.add(freeNode);
+                    findPathSection(MSTMatrix,subGraph, freeNodes, spentNodes, foundList, minGraphWeight, subGraphSize);          //bare bliv med koden ovenfor, indtil alle punkter er brugt op, derefter find vægten
+
+                    freeNodes.add(j, freeNode);                                    //når vi har undersøgt alle muligheder for denne kombination, tilføjes den listen af frie punkter igen
+                    spentNodes.pop();
+                }
+            }
+            freeNodes.add(i,vStart);
+            spentNodes.pop();
+        }
+
+        /**Unite MST and matching matrices*/
+        Double[][] UnitedMatrix = new Double[size][size];
+        copyMatrix(MSTMatrix,UnitedMatrix,size);
+        returnSymmetry(matrix,size);
+
+        debug("kruskal matrix: ");
+        printMatrix(UnitedMatrix,size);
+
+        for (int i = 0; i < subGraphSize; i+=2) {                           //tilføjer de fundne kanter til minimum udspændende træ
+            int from = foundList.get(i);
+            int to = foundList.get(i + 1);
+            debug("matrix from/to: "+matrix[from][to]);
+            UnitedMatrix[from][to] = 1d;
+            UnitedMatrix[to][from] = 1d;
+
+        }
+        returnSymmetry(UnitedMatrix,size);
+        debug("printing united matrix");
+        for (int x = 0; x < size; x++){
+            for (int y = 0; y < size;y++){
+                if (UnitedMatrix[x][y] != 0){
+                    UnitedMatrix[x][y] = 1d;
+                }
+            }
+        }
+        printMatrix(UnitedMatrix,size);
+
+
+        /**remove repeated vertices*/
+//        find repeated vertices
+        ArrayList<Integer> repeatedNodes = findRepeatedNodes(UnitedMatrix, size);               // en liste med gentagne punkter laves
+        for (int i : repeatedNodes){
+            debug("repeated node: "+i);
+        }
+        for (int node : repeatedNodes) {
+            ArrayList<Integer> connectedNodes = findConnectedEdges(UnitedMatrix, node, size);        //for det enkelte punkt, lav en liste med incindente kanter
+
+            while (connectedNodes.size() > 2) {                                 //imens punktets antal af incindtente kanter er større end 2, så...
+
+                int neighbour = connectedNodes.get(0);                      //tag den første kant i listen..
+
+
+                debug("connected node: "+neighbour);
+                UnitedMatrix[node][neighbour] = 0d;                        //og fjern den.
+                UnitedMatrix[neighbour][node] = 0d;
+
+                for (int j = 1; j < connectedNodes.size(); j++) {           //nu skal der ses om der kan fjernes en kant uden at bryde kredsen. Så tager og fjerner en og ser hvad der sker..
+                    Double[][] tempMatrix = new Double[size][size];
+                    copyMatrix(UnitedMatrix, tempMatrix,size);              //lav en midlertidig matrix, for at se havd der sker.
+                    int otherNeighbour = connectedNodes.get(j);             //finder en kant..
+                    debug("other connected node: "+otherNeighbour);
+                    tempMatrix[node][otherNeighbour] = 0d;                  //og fjerner den.
+                    tempMatrix[otherNeighbour][node] = 0d;
+                    tempMatrix[neighbour][otherNeighbour] = 1d;  //de fjernede kanters forbundne punkter forbindes...
+                    tempMatrix[otherNeighbour][neighbour] = 1d;
+
+                    printMatrix(tempMatrix,size);
+
+                    if (seeIfEulerCircuit(tempMatrix,size)) {         //hvis det efterlader en eulerkreds, så...
+                        connectedNodes.remove(0);               //fjern disse punkter fra listen af det enkelte punkt
+                        connectedNodes.remove(j);
+                        UnitedMatrix[node][otherNeighbour] = 0d;
+                        UnitedMatrix[otherNeighbour][node] = 0d;
+                        UnitedMatrix[neighbour][otherNeighbour] = 1d;
+                        UnitedMatrix[otherNeighbour][neighbour] = 1d;
+                        break;
+                    }else {
+                        debug("printing failed matrix...");
+                        printMatrix(tempMatrix,size);
+                    }
+                }
+            }
+        }
+        printMatrix(UnitedMatrix,size);     //print den færdige matrix ud
+
+        takeATour(matrix,UnitedMatrix,0,0,size);
+    }
+
+
+    private static void takeATour(Double[][] Matrix, Double[][] unitedMatrix, int x, int y, int size) {
+        ArrayList<Integer> placeList = new ArrayList<>();
+        tourLoopX(unitedMatrix,size,x,y,placeList);
+
+        double length = 0;
+        for (int i =0; i < size; i++) {
+            if (i > 0) {
+                length += Matrix[i-1][i];
+            }
+            debug(String.valueOf((placeList.get(i))));
+        }
+        length += Matrix[size-1][0];
+        debug(String.valueOf((placeList.get(0))));
+
+        debug("length: "+(length/2)+" minutes.");
+
+    }
+    private static void halveMatrix(Double[][] matrix, int size) {
+        for (int i = 0; i < size; i++){
+            for (int j = i ; j < size; j++){
+                matrix[j][i] = 0d;
+            }
+        }
+    }
+    private static void returnSymmetry(Double[][] matrix, int size) {
+        for (int i = 0; i < size; i++){
+            for (int j = i ; j < size; j++){
+                matrix[j][i] = matrix[i][j];
+            }
+        }
+    }
+
+    private static boolean seeIfEulerCircuit(Double[][] unitedMatrix, int size) {
+
+        for (int x = 0; x < size; x++){
+            for (int y = 0; y < size; y++){
+                if (unitedMatrix[x][y] != 0d){
+                    unitedMatrix[x][y] = 1d;
+                }
+            }
+        }
+
+        euler_findLoopX(unitedMatrix,size,0,0);    // løb igennem kredsen, hvor ud fra punkternes incindente kanter vælges den nabo, som er blevet gennemløbet mindst.
+        // indtil én af punkterne er blevet gennemløbet 21 gange...
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {            // Kig igennem matricen. Hvis et punkt ikke er blevet taget endnu, er det ikke en Eulerkreds.
+                if (unitedMatrix[x][y] == 1)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private static ArrayList<Integer> findConnectedEdges(Double[][] unitedMatrix, int node, int size) {
+        ArrayList<Integer> aList = new ArrayList<>(); //gå igennem "y"-aksen, og tilføj alle punkter, som forbindes med hovedpunktet
+        for (int y = 0; y < size; y++){
+            if (unitedMatrix[node][y] != 0){
+                aList.add(y);
+            }
+        }
+        return aList;
+    }
+
+    private static ArrayList<Integer> findRepeatedNodes(Double[][] unitedMatrix, int size) {
+        ArrayList<Integer> aList = new ArrayList<>();
+        for (int x = 0; x <  size; x++) {
+            int cardNode = 0;
+            for (int y = 0; y < size; y++) {// gå igennem "y"-aksen for hvert punkt, og tilføj en grad hvis der er en kant.
+                if (unitedMatrix[x][y] != 0){
+                    cardNode++;
+                }
+            }
+            if (cardNode > 2){
+                aList.add(x);
+            }
+        }
+        return aList;
+    }
+
+    private static ArrayList<Integer> initiateFreeNodes(Double[][] OMatrix, int size){
+        ArrayList<Integer> aList = new ArrayList<>();
+        for (int i = 0; i < size; i++){
+            if (OMatrix[i][i] == 1)
+                aList.add(i);
+        }
+        Collections.sort(aList);
+        return aList;
+    }
+
+    private static void findPathSection(Double[][] MSTMatrix, Double[][] subGraph, ArrayList<Integer> freeNodes, Stack<Integer> spentNodes, Stack<Integer> foundList, double[] minGraphWeight, int subGraphSize){
+        if (calculateWeight(subGraph,spentNodes) > minGraphWeight[0]){
+        }else if (freeNodes.size() > 0) {
+            for (int i = 0; i < freeNodes.size(); i++) {
+                Integer freeNode = freeNodes.get(i);
+                freeNodes.remove(freeNode);
+                spentNodes.add(freeNode);
+
+
+                for (int j = i; j < freeNodes.size(); j++) {
+                    int departNode  = spentNodes.peek();
+                    int arrivalNode = freeNodes.get(j);
+                    if (MSTMatrix[departNode][arrivalNode] == 0) {
+                        Integer freeNode2 = freeNodes.get(j);
+                        freeNodes.remove(freeNode2);
+                        spentNodes.add(freeNode2);
+
+                        findPathSection(MSTMatrix,subGraph, freeNodes, spentNodes, foundList, minGraphWeight, subGraphSize);
+
+                        freeNodes.add(j, freeNode2);
+                        spentNodes.pop();
+                    }
+                }
+
+                freeNodes.add(i,freeNode);
+                spentNodes.pop();
+            }
+
+        }else {
+            double weight = calculateWeight(subGraph, spentNodes);
+            if (weight < minGraphWeight[0] || minGraphWeight[0] == 0) {
+                if (minGraphWeight[0] == 0)debug("hello");
+                debug("found smaller: "+weight);
+                minGraphWeight[0] = weight;
+//                foundList.clear();
+                for (int i = 0; i < subGraphSize; i++){
+                    foundList.add(spentNodes.get(i));
+                }
+            }
+        }
+    }
+
+    private static double calculateWeight(Double[][] subGraph, Stack<Integer> SpentNodes) {
+        double weight = 0;
+        for (int i = 0; i < SpentNodes.size(); i+=2){
+            weight += subGraph[SpentNodes.get(i)][SpentNodes.get(i+1)];
+        }
+        return weight;
+    }
+
+    private static boolean euler_findLoopX(Double[][] matrix, int size, int staticX, int staticY){
+        double lowest = -1;
+        int place = -1;
+        for (int x = 0; x < size;x++){
+            if (x!=staticX) {
+                if (matrix[x][staticY] > 0) {
+                    if (matrix[x][staticY] < lowest || lowest == -1){
+                        lowest = matrix[x][staticY];
+                        place = x;
+                    }
+                }
+            }
+        }
+        if (lowest == -1){
+            return false;
+        }
+        matrix[place][staticY]++;
+        matrix[staticY][place]++;
+        if (matrix[place][staticY] > 20) {
+            return true;
+        } else {
+            if (euler_findLoopY(matrix, size, place,staticY)) return true;
+        }
+        return false;
+    }
+    private static boolean euler_findLoopY(Double[][] matrix, int size, int staticX, int staticY){
+        double lowest = -1;
+        int place = -1;
+        for (int y = 0; y < size;y++){
+            if (y!=staticY) {
+                if (matrix[staticX][y] > 0) {
+                    if (matrix[staticX][y] < lowest || lowest ==-1){
+                        lowest = matrix[staticX][y];
+                        place = y;
+                    }
+                }
+            }
+        }
+        if (lowest == -1){
+            return false;
+        }
+        matrix[staticX][place]++;
+        matrix[place][staticX]++;
+        if (matrix[staticX][place] > 20) {
+            return true;
+        } else {
+            if (euler_findLoopX(matrix, size, staticX,place)) return true;
+        }
+        return false;
+    }
+    private static boolean kruskal_findLoopX(Double[][] matrix, int size, int staticX, int staticY){
+        for (int x = 0; x < size;x++){
+//            debug("check1 at ["+x+"]["+staticY+"]: "+matrix[x][staticY]);
+            if (x!=staticX) {
+                if (matrix[x][staticY] > 0) { debug(matrix[x][staticY]+"i: "+x+"  "+staticY);
+                    matrix[x][staticY]++;
+                    if (matrix[x][staticY] > 2) {
+//                        debug("hi "+String.valueOf(matrix[x][staticY]));
+                        return true;
+                    } else {
+                        if (kruskal_findLoopY(matrix, size, x,staticY)) return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private static boolean kruskal_findLoopY(Double[][] matrix, int size, int staticX, int staticY){
+        for (int y = 0; y < size;y++){
+//            debug("check2 at ["+staticX+"]["+y+"]: "+matrix[staticX][y]);
+            if (y!=staticY) {
+                if (matrix[staticX][y] > 0) {
+                    matrix[staticX][y]++;
+                    if (matrix[staticX][y] > 2) {
+                        return true;
+                    } else {
+                        if (kruskal_findLoopX(matrix, size, staticX,y)) return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean tourLoopX(Double[][] matrix, int size, int staticX, int staticY, ArrayList<Integer> placeList){
+        for (int x = 0; x < size;x++){
+            if (x!=staticX) {
+                if (matrix[x][staticY] > 0) {
+                    matrix[x][staticY]++;
+                    placeList.add(x);
+                    if (matrix[x][staticY] > 2) {
+                        return true;
+                    } else {
+                        if (tourLoopY(matrix, size, x,staticY,placeList)) return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private static boolean tourLoopY(Double[][] matrix, int size, int staticX, int staticY, ArrayList<Integer> placeList){
+        for (int y = 0; y < size;y++){
+            if (y!=staticY) {
+                if (matrix[staticX][y] > 0) {
+                    matrix[staticX][y]++;
+                    placeList.add(y);
+                    if (matrix[staticX][y] > 2) {
+                        return true;
+                    } else {
+                        if (tourLoopX(matrix, size, staticX,y,placeList)) return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static void copyMatrix(Double[][] fromM, Double[][] toM, int size){
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
+                toM[i][j] = fromM[i][j];
+            }
+        }
+    }
+    private static void printMatrix(Double[][] matrix, int size){
+        debug("\n");
+        for (int x = 0; x < size; x++){
+            debug("");
+            for (int y = 0 ; y < size;y++){
+                if (matrix[x][y] >= 10) {
+                    System.out.print(String.valueOf(matrix[x][y]) + "||");
+                }else {
+                    System.out.print(String.valueOf(matrix[x][y]) + " ||");
+                }
+            }
+        }
+        debug("\n");
+
+    }
+
+    private static void initiateMatrix(Double[][] matrix, int size){
+        debug("initiate");
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size;j++){
+                matrix[i][j] = 0.0d;
+            }
+        }
+    }
+
+    private static void debug(String s){
+        System.out.println(s);
+    }
+
+    private static class Edgie{
+        double length;
+        int beginV;
+        int endV;
+
+        Edgie(){}
+
+        Edgie(int beginV, int endV, double length){
+            Edgie.this.beginV = beginV;
+            Edgie.this.endV = endV;
+            Edgie.this.length = length;
+        }
+
+    }
+}
