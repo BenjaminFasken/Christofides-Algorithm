@@ -377,7 +377,7 @@ public class Main {
         }
         matrix[place][staticY]++;
         matrix[staticY][place]++;
-        if (matrix[place][staticY] > 20) {
+        if (matrix[place][staticY] > size) {
             return true;
         } else {
             if (euler_findLoopY(matrix, size, place,staticY)) return true;
@@ -402,7 +402,7 @@ public class Main {
         }
         matrix[staticX][place]++;
         matrix[place][staticX]++;
-        if (matrix[staticX][place] > 20) {
+        if (matrix[staticX][place] > size) {
             return true;
         } else {
             if (euler_findLoopX(matrix, size, staticX,place)) return true;
