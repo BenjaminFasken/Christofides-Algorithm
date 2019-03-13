@@ -3,6 +3,7 @@ Christofides algorithm
 
 Til den, som ser min kode:
 Jeg har skrevet koden i ét dokument, så koden kan nemt copy-pastes og testes.
+
 Jeg tænker på engelsk, så derfor er kommentarene skiftevis engelsk og dansk, fordi jeg også skulle kommentere koden til min projekt gruppe.
 
 Til minimum-vægt perfekt parringen, blev Edwards blossom algoritme ikke taget i brug, da det var uden for vores projekt.
