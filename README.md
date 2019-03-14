@@ -1,5 +1,5 @@
-# Christofides-Algorithm
-Christofides algorithm
+# Christofides-Algoritme
+Christofides algoritme
 
 Til den, som ser min kode:
 
