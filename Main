@@ -114,6 +114,7 @@ public class Main {
         /**Make minimum weight, perfect matching graph using brute force.*/
         double[] minGraphWeight = {99999d};                                     // angiv variabel til mindste vægt af den perfekt parrede træ.
         ArrayList<Integer> freeNodes = initiateFreeNodes(OMatrix, size);    //lav en liste af alle punkterne fra ulige-grads-matricen.
+
         Stack<Integer> spentNodes = new Stack<>();                          //initiere en liste til brugte punkter
         Stack<Integer> foundList = new Stack<>();                           //initiere en liste, som skal holde på parringen med hidtil mindst vægt.
 
@@ -131,7 +132,7 @@ public class Main {
                     Integer freeNode = freeNodes.get(j);
                     freeNodes.remove(freeNode);
                     spentNodes.add(freeNode);
-                    findPathSection(MSTMatrix,subGraph, freeNodes, spentNodes, foundList, minGraphWeight, subGraphSize);          //bare bliv med koden ovenfor, indtil alle punkter er brugt op, derefter find vægten
+                    findMatching(MSTMatrix,subGraph, freeNodes, spentNodes, foundList, minGraphWeight, subGraphSize);          //bare bliv med koden ovenfor, indtil alle punkter er brugt op, derefter find vægten
 
                     freeNodes.add(j, freeNode);                                    //når vi har undersøgt alle muligheder for denne kombination, tilføjes den listen af frie punkter igen
                     spentNodes.pop();
@@ -177,10 +178,10 @@ public class Main {
         }
         for (int node : repeatedNodes) {
             ArrayList<Integer> connectedNodes = findConnectedEdges(UnitedMatrix, node, size);        //for det enkelte punkt, lav en liste med incindente kanter
-            
+
             connectedNodes.sort((o1, o2) -> (int) ((matrix[node][o2] - matrix[node][o1]) * 100000));        //sorter, så kanterne med højst vægt fratges først
             for (Integer integer : connectedNodes) debug(integer + " | " + matrix[node][integer]);
-            
+
             while (connectedNodes.size() > 2) {                                 //imens punktets antal af incindtente kanter er større end 2, så...
 
                 int neighbour = connectedNodes.get(0);                      //tag den første kant i listen..
@@ -312,7 +313,7 @@ public class Main {
         return aList;
     }
 
-    private static void findPathSection(Double[][] MSTMatrix, Double[][] subGraph, ArrayList<Integer> freeNodes, Stack<Integer> spentNodes, Stack<Integer> foundList, double[] minGraphWeight, int subGraphSize){
+    private static void findMatching(Double[][] MSTMatrix, Double[][] subGraph, ArrayList<Integer> freeNodes, Stack<Integer> spentNodes, Stack<Integer> foundList, double[] minGraphWeight, int subGraphSize){
         if (calculateWeight(subGraph,spentNodes) > minGraphWeight[0]){
         }else if (freeNodes.size() > 0) {
             for (int i = 0; i < freeNodes.size(); i++) {
@@ -329,7 +330,7 @@ public class Main {
                         freeNodes.remove(freeNode2);
                         spentNodes.add(freeNode2);
 
-                        findPathSection(MSTMatrix,subGraph, freeNodes, spentNodes, foundList, minGraphWeight, subGraphSize);
+                        findMatching(MSTMatrix,subGraph, freeNodes, spentNodes, foundList, minGraphWeight, subGraphSize);
 
                         freeNodes.add(j, freeNode2);
                         spentNodes.pop();
@@ -527,6 +528,5 @@ public class Main {
             Edgie.this.endV = endV;
             Edgie.this.length = length;
         }
-
     }
 }
