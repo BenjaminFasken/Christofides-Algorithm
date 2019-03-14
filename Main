@@ -177,7 +177,10 @@ public class Main {
         }
         for (int node : repeatedNodes) {
             ArrayList<Integer> connectedNodes = findConnectedEdges(UnitedMatrix, node, size);        //for det enkelte punkt, lav en liste med incindente kanter
-
+            
+            connectedNodes.sort((o1, o2) -> (int) ((matrix[node][o2] - matrix[node][o1]) * 100000));        //sorter, så kanterne med højst vægt fratges først
+            for (Integer integer : connectedNodes) debug(integer + " | " + matrix[node][integer]);
+            
             while (connectedNodes.size() > 2) {                                 //imens punktets antal af incindtente kanter er større end 2, så...
 
                 int neighbour = connectedNodes.get(0);                      //tag den første kant i listen..
